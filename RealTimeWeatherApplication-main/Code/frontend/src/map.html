@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id ="map" style="width: 800px; height:600px"></div>
+<script src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
+<script src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
+<script src="https://js.api.here.com/v3/3.1/mapsevents.js"></script>
+
+<script>
+    // initialize map api
+    const platform = new H.service.Platform({
+        "app_id": "cf6wwBoRFQFMIPZ6slRN"
+    })
+    const map = new H.Map(
+        document.getElementById("map"),
+        platform.createDefaultLayers().normal.map,
+        {
+            zoom: 10,
+            center: {lat: 37, lng: -121}
+        }
+    )
+</script>
+</body>
+</html>

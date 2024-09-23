@@ -1,0 +1,37 @@
+<!--
+    login_page.ejs
+    This page facilitates user authentication for the WeatherVision application. It provides a secure interface for users to log into their accounts,
+    featuring fields for email and password entry. The page also includes links for users to reset their passwords or to register for a new account if they are new to the platform.
+    This login interface ensures that users can securely access their personalized weather information and settings.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WeatherVision</title>
+    <link rel="stylesheet" href="/styles/login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <img src="/images/logo.png" alt="WeatherVision Logo" class="logo">
+    <div class="header-content">
+        <h1>Weather<span class="vision">Vision</span></h1>
+        <h2>Your Personal Weather Companion</h2>
+    </div>
+    <div class="login-container">
+        <h3 class="sign-in-text">Sign in</h3>
+        <p class="subtitle">Stay ahead of the weather.</p>
+        <form action="/login_page" method="POST" class="login-form">
+            <input type="text" name="email" class="log-input" placeholder="Email or Phone" required>
+            <input type="password" name="password" class="log-input" placeholder="Password" required>
+            <div class="forgot-password">Forgot password?</div>
+            <button type="submit" class="btn-signin">Sign in</button>
+            <a href="/create_account" class="btn-create">Don't have an account? Sign up</a>
+        </form>
+    </div>
+    <footer class="footer">
+        <p>&copy; 2024 RealTimeWeatherApplication. All rights reserved.</p>
+    </footer>
+</body>
+</html>

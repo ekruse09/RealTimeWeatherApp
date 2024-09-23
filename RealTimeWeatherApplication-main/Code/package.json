@@ -1,0 +1,41 @@
+{
+  "name": "realtimeweatherapplication",
+  "version": "1.0.0",
+  "description": "This Real-Time Weather Application provides up-to-the-minute weather information for your current location, as well as weather tracking capabilities for your trips. ",
+  "main": "index.js",
+  "scripts": {
+    "start": "node backend/src/start.js",
+    "test": "mocha backend/test/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jaymoreno7/RealTimeWeatherApplication.git"
+  },
+  "author": "Bilal Ahmed, Jeth Balabagno, Hazzem Cordash, Elijah Kruse, Timothy Xiong, Julian Moreno-Johns",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jaymoreno7/RealTimeWeatherApplication/issues"
+  },
+  "homepage": "https://github.com/jaymoreno7/RealTimeWeatherApplication#readme",
+  "dependencies": {
+    "axios": "^1.6.7",
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "cheerio": "^1.0.0-rc.12",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.9",
+    "email-validator": "^2.0.4",
+    "express": "^4.18.2",
+    "express-session": "^1.18.0",
+    "get-port": "^7.0.0",
+    "moment-timezone": "^0.5.45",
+    "sequelize": "^6.37.2",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "chai-http": "^4.4.0",
+    "mocha": "^10.3.0",
+    "supertest-session": "^5.0.1"
+  }
+}

@@ -1,0 +1,153 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background-image: url("../../../images/login_bg.jpeg"); 
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  
+  .header-content {
+    text-align: center;
+    position: absolute;
+    top: 5%; /* This value was 20% before, you can adjust it as needed to raise the header */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+  }
+  
+  
+  .vision {
+    color: #a3b4e9;
+    -webkit-text-stroke: 1px rgba(0, 0, 0, 0.15);
+  }
+    
+  
+  .header-content h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 3rem;
+    color: white;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+  
+  .header-content h2 {
+    color: white;
+    font-size: 1rem;
+    margin-top: 10px;
+    font-style: italic;
+  }
+  
+  .login-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  
+  .login-container h3 {
+    text-align: left;
+    color: black;
+    margin-top: 0;
+    margin-bottom: 5px;
+  }
+  
+  .login-container .subtitle {
+    text-align: left;
+    color: #666;
+    font-size: 0.9rem;
+    margin: 0;
+    margin-bottom: 20px;
+  }
+  
+  .login-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .log-input {
+    padding: 12px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
+    outline: none;
+  }
+  
+  .forgot-password {
+    color: #007BFF;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .btn-signin {
+    padding: 10px 0;
+    background-color: #007BFF;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-signin:hover {
+    background-color: #0056b3;
+  }
+  
+  .btn-create {
+    color: #555; 
+    font-size: 0.9rem;
+    background-color: transparent;
+    border: none;
+    transition: color 0.3s ease;
+    cursor: pointer;
+    margin-top: 8px; 
+  }
+  
+  .btn-create:hover {
+    color: #007BFF; 
+  }
+  
+  .footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+    background-color: rgba(255, 255, 255, 0.6);
+    color: rgb(31, 31, 31); 
+    font-size: 0.9rem;
+  }
+  
+  html {
+    position: relative;
+    min-height: 100%;
+  }
+  
+  body {
+    margin-bottom: 60px;
+  }
+  
+  
+  .logo {
+    position: absolute;
+    top: 15px;
+    left: 10px; 
+    width: 240px; 
+    height: auto; 
+  }
+  
+  
+  

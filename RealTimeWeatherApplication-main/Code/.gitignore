@@ -1,0 +1,31 @@
+node_modules/
+.env
+.DS_Store
+.vscode/
+.idea/
+*.log
+.cache/
+
+
+#Build output files
+/dist
+/build
+/out
+
+#Local environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+#Debug files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+#Temp files
+*.tmp
+*.swp
+*.swo
+*~

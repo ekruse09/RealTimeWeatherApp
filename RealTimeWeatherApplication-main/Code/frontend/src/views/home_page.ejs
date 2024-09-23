@@ -1,0 +1,138 @@
+<!--
+    home_page.ejs
+    Acts as the main landing page for the WeatherVision application. It provides users with access to different functionalities
+    such as current weather updates, trip planning, and weather alerts. This page is designed to give a brief overview
+    of what the application offers while allowing easy navigation to its core features.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeatherVision</title>
+    <link rel="stylesheet" href="/styles/home_page.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="navbar" id="navbar">
+        <img src="/images/logo.png" alt="WeatherVision Logo" class="logo">
+        <nav>
+            <ul>
+                <li><a href="/weather_page">Current Weather</a></li>
+                <li><a href="/trip_planner">Trip Planner</a></li>
+            </ul>
+        </nav>
+        <div class="navbar-controls">
+            <a href="/profile_page" class="profile-page-link">
+                <img src="../../../images/profile.png" alt="Profile" class="profile-icon">
+            </a>
+            <form action="/log_out" method="post">
+                <button type="submit" class="logout-button-style">Log Out</button>
+            </form>
+        </div>
+    </header>
+
+    <div class="get-started">
+        <header class="header-content">
+            <h1>Welcome to Weather<span class="vision">Vision</span></h1>
+        </header>
+        <p>Your one-stop destination for weather forecasts, trip planning, and alerts.</p>
+        <div class="scroll-down-arrow">&#x2193;</div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="features-heading">
+        <h2>Features</h2>
+    </div>
+    <div class="features-text">
+        <p><strong>Current Location Weather:</strong> Get immediate weather updates for your current location with just a click. This feature uses your device's location services to provide accurate and timely weather details.</p>
+    </div>
+    <div class="features-text">
+        <p><strong>Trip Weather Tracking:</strong> Planning a trip? Input your destinations to receive forecast updates leading up to and during your trip. Stay ahead of the weather, no matter where you're going.</p>
+    </div>
+    <div class="features-text">
+        <p><strong>Detailed Forecasts:</strong> Access detailed weather forecasts, including temperature, humidity, wind speed, and precipitation chances. Our forecasts are updated regularly to ensure accuracy.</p>
+    </div>
+    <div class="features-text">
+        <p><strong>User-Friendly Interface:</strong> Our app boasts a clean, intuitive interface that makes weather tracking a breeze. Navigate easily between your current location's weather and your trip plans with simple taps.</p>
+    </div>
+
+    <main class="main-style">
+        <section id="current-weather" class="section-style">
+            <h2>Current Weather</h2>
+            <p>Get the latest weather forecast for your area.</p>
+            <a href="/weather_page" class="btn">View Weather</a>
+        </section>
+
+        <section id="trip-planner" class="section-style">
+            <h2>Trip Planner</h2>
+            <p>Plan your trips with our comprehensive weather guide.</p>
+            <a href="/trip_planner" class="btn">Plan a Trip</a>
+        </section>
+
+    </main>
+
+    <footer class="footer-style">
+        <p>&copy; 2024 RealTimeWeatherApplication. All rights reserved.</p>
+    </footer>
+    <script>
+        // Event listener for DOM content loaded
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const navbar = document.getElementById('navbar');
+
+            // Initial navbar class adjustment based on scroll position
+            if (window.scrollY > 20) {
+                navbar.classList.remove('expanded');
+            } else {
+                navbar.classList.add('expanded');
+            }
+
+            // Adjust navbar visibility on scroll
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 20) {
+                    navbar.classList.remove('expanded'); // Minimize the navbar when scrolled down
+                } else {
+                    navbar.classList.add('expanded'); // Expand the navbar when at the top of the page
+                }
+            });
+        });
+
+        // Function to check if an element is in view
+        function isElementInView(element) {
+            const rect = element.getBoundingClientRect();
+            return (
+                rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.bottom >= 0
+            );
+        }
+
+        // Function to check and update element visibility based on scroll position
+        function checkElementVisibility() {
+            const featuresHeading = document.querySelector('.features-heading');
+            const featureTexts = document.querySelectorAll('.features-text');
+            const sections = document.querySelectorAll('.section-style');
+
+            // Update visibility of feature texts and sections on scroll
+            if (window.scrollY > 0 && isElementInView(featuresHeading)) {
+                featuresHeading.classList.add('features-visible');
+            }
+
+            featureTexts.forEach((text, index) => {
+                if (window.scrollY > (index * 100) && isElementInView(text)) {
+                    text.classList.add('features-visible');
+                }
+            });
+
+            sections.forEach((section, index) => {
+                if (window.scrollY > (index * 100) + 300 && isElementInView(section)) {
+                    section.classList.add('module-visible');
+                }
+            });
+        }
+
+        // Add scroll event listener to check element visibility
+        window.addEventListener('scroll', checkElementVisibility);
+    </script>
+</body>
+</html>

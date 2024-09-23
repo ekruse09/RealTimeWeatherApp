@@ -1,0 +1,48 @@
+<!--
+    profile_page.ejs
+    This page serves as the user profile management interface for the WeatherVision application. It displays detailed information about the logged-in user,
+    including their ID, email, and other personal details. The page allows users to view their personal data securely and provides
+    administrative links such as logging out. This ensures that users have direct control over their account settings and personal information within the system.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Information</title>
+    <link rel="stylesheet" href="/styles/profile_page.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="navbar" id="navbar">
+        <img src="/images/logo.png" alt="WeatherVision Logo" class="logo">
+        <nav>
+            <ul>
+                <li><a href="/weather_page">Current Weather</a></li>
+                <li><a href="/trip_planner">Trip Planner</a></li>
+            </ul>
+        </nav>
+        <div class="navbar-controls">
+            <a href="/profile_page" class="profile-page-link">
+                <img src="../../../images/profile.png" alt="Profile" class="profile-icon">
+            </a>
+            <form action="/log_out" method="post">
+                <button type="submit" class="logout-button-style">Log Out</button>
+            </form>
+        </div>
+    </header>
+    <h1>User Information</h1>
+    <div class = "user-info">
+        <strong>User ID:</strong><%= user.id %><br>
+        <strong>Email:</strong><%= user.email %><br>
+        <strong>Password:</strong><%= user.password %><br>
+        <strong>First Name:</strong><%= user.first_name %><br>
+        <strong>Last Name:</strong><%= user.last_name %><br>
+        <strong>Role:</strong><%= user.role %><br>
+    </div>
+    <footer class="footer">
+        <p>&copy; 2024 RealTimeWeatherApplication. All rights reserved.</p>
+    </footer>
+</body>
+</html>

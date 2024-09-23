@@ -1,0 +1,6 @@
+{
+    "scripts": {
+      "start": "node backend/src/server.js",
+      "test": "mocha backend/test/*.test.js"
+  }
+}

@@ -1,0 +1,41 @@
+<!--
+    create_account.ejs
+    This page is designed to facilitate new user registration for the WeatherVision application. It provides a form for potential users to create an account,
+    asking for personal information such as email, password, first name, last name, and user role. This interface ensures that new users can easily and securely register
+    to access customized weather forecasts, alerts, and trip planning features. The page emphasizes a straightforward and welcoming registration process, aligning with the application's goal to be your personal weather companion.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WeatherVision - Create New Account</title>
+    <link rel="stylesheet" href="/styles/create_account.css"> 
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <img src="/images/logo.png" alt="WeatherVision Logo" class="logo">
+    <div class="header-content">
+        <h1>Weather<span class="vision">Vision</span></h1>
+        <h2>Your Personal Weather Companion</h2>
+    </div>
+    <div class="login-container"> 
+        <h3 class="sign-in-text">Create Account</h3> 
+        <p class="subtitle">One account for everything WeatherVision, including real time weather updates.</p>
+        <form action="/create_account" method="post" class="login-form"> 
+            <input type="text" name="email" class="log-input" placeholder="Email" required> 
+            <input type="password" name="password" class="log-input" placeholder="Password" required>
+            <input type="text" name="first_name" class="log-input" placeholder="First Name" required>
+            <input type="text" name="last_name" class="log-input" placeholder="Last Name" required>
+            <select name="role" class="log-input" required> 
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+            </select>
+            <button type="submit" class="btn-signin">Create Account</button> 
+        </form>
+    </div>
+    <footer class="footer">
+        <p>&copy; 2024 RealTimeWeatherApplication. All rights reserved.</p>
+    </footer>
+</body>
+</html>

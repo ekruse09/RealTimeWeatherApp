@@ -1,0 +1,246 @@
+/* General Style */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    padding-top: 100px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #e4e8ec;
+    width: 100%;
+}
+
+/* Navbar Style */
+.navbar {
+    padding: 0 30px;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #5b95d9; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    width: 120px;
+    height: auto;
+}
+
+.navbar-controls {
+    display: flex;
+    align-items: center;
+    padding-right: 20px;
+}
+
+.profile-icon {
+    height: 40px;
+    width: 40px;
+    margin-right: 20px; 
+}
+
+.logout-button-style {
+    padding: 5px 15px;
+    font-size: 14px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Form Style */
+.input-form-style {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 40px; 
+    gap: 10px;
+}
+
+#tripForm, #saveTripForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+    width: auto;
+}
+
+#tripForm input, #saveTripForm input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
+    outline: none;
+    width: 250px;
+}
+
+#tripForm button, #saveTripForm button {
+    padding: 12px 20px;
+    background-color: #007BFF;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 5px;
+}
+
+#tripForm button:hover, #saveTripForm button:hover {
+    background-color: #0056b3;
+}
+
+/* Map Container */
+#mapContainer {
+    width: 90%;
+    max-width: 1200px;
+    margin: 20px auto;
+    height: auto;
+}
+
+#map {
+    width: 100%;
+    height: 500px;
+    background-color: #e6e6e6;
+    border-radius: 10px; 
+}
+
+/* Weather Information Style */
+.weather-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    width: 90%; /
+    max-width: 1200px;
+    margin: 20px auto;
+}
+
+.weather-card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: 0.3s;
+    background-color: #f3f3f3;
+    border-radius: 8px; 
+    overflow: hidden;
+}
+
+.weather-card:hover {
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+.weather-header {
+    padding: 8px 16px; 
+    background-color: #7b8cd6;
+    color: white; 
+}
+
+.weather-body {
+    padding: 16px;
+    color: #555;
+}
+
+.weather-date {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.weather-temperature {
+    font-weight: bold;
+}
+
+.weather-description {
+    font-style: italic;
+}
+
+.placesList li {
+    cursor: pointer;
+    margin: 5px 0;
+    padding: 5px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    list-style-type: none;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    margin-right: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #a3b4e9;
+}
+
+/* Additional Styles */
+.saved-trips-container {
+    width: 250px;
+    height: 400px;
+    overflow-y: auto;
+    margin-right: 20px;
+}
+
+.trip-details-container {
+    margin-bottom: 20px;
+}
+
+.add-city-container {
+    margin-top: 20px;
+}
+
+.delete-button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 8px 15px; 
+    margin-left: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; 
+}
+
+.delete-button:hover {
+    background-color: #cc0000;
+}
+/* Trip Button Style */
+.trip-button {
+    padding: 12px 20px;
+    background-color: #007BFF;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 5px;
+    margin-right: 10px; 
+    display: inline-block; 
+}
+
+.trip-button:hover {
+    background-color: #0056b3;
+}

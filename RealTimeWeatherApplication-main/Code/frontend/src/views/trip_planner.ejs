@@ -1,0 +1,328 @@
+<!--
+    trip_planner.ejs
+    Serves as the Trip Planner page for a weather application, integrating HERE Maps to display locations.
+    Users can add cities to their trip itinerary, view these locations on a map, and fetch real-time weather forecasts for each destination.
+    This page enhances the user experience by allowing seamless trip planning with integrated weather updates.
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Trip Planner</title>
+    <link rel="stylesheet" type="text/css" href="/styles/trip_planner.css">
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+</head>
+<body>
+    <header class="navbar" id="navbar">
+        <a href="/home_page">
+            <img src="/images/logo.png" alt="WeatherVision Logo" class="logo">
+        </a>
+        <nav>
+            <ul>
+                <li><a href="/weather_page">Current Weather</a></li>
+                <li><a href="/trip_planner">Trip Planner</a></li>
+            </ul>
+        </nav>
+        <div class="navbar-controls">
+            <a href="/profile_page" class="profile-page-link">
+                <img src="/images/profile.png" alt="Profile" class="profile-icon">
+            </a>
+            <form action="/log_out" method="post">
+                <button type="submit" class="logout-button-style">Log Out</button>
+            </form>
+        </div>        
+    </header>
+    
+    <div class="container">
+        <!-- Move Save Trip Form to the top -->
+        <div class="save-trip-container">
+            <form id="saveTripForm" class="input-form-style">
+                <label for="tripName">Trip Name:</label>
+                <input type="text" id="tripName" name="tripName" required>
+                <button type="submit">Save Trip</button>
+            </form>
+        </div>
+       
+        <div class="saved-trips-container">
+            <h2>Saved Trips</h2>
+            <ul id="savedTripsList"></ul>
+        </div>
+
+        <div class="trip-details-container">
+            <div id="tripDetails" style="display:none;">
+                <h2>Trip Details</h2>
+                <ul id="tripInfo"></ul>
+            </div>
+        </div>
+
+        <div id="mapContainer">
+            <div id="map" style="border: 1px solid #ccc;"></div>
+        </div>
+
+        <div class="add-city-container">
+            <form id="tripForm" class="input-form-style">
+                <label for="place">City (e.g., Milwaukee, WI):</label>
+                <input type="text" id="place" name="place" required>
+                <label for="date">Date:</label>
+                <input type ="date" id="date" name="date" required>
+                <button type="submit">Add City</button>
+                <button type="button" onclick="clearTripForm()">Clear Trip</button>
+            </form>
+            <ul id="placesList"></ul>
+        </div>
+    </div>       
+
+    <script>
+        // This script powers the Trip Planner functionality within the WeatherVision application.
+        // It initializes and manipulates a map using the HERE Maps API to allow users to add and view locations.
+        // On form submission, it geocodes the entered location to place a marker on the map and fetches the current weather forecast for that location.
+        // It dynamically updates the map with markers representing user-added destinations and integrates weather forecasts by making API calls to a forecast endpoint.
+        // Each marker on the map is numbered and clicking on a marker provides weather information for that specific location, enhancing the trip planning experience.
+          
+            var platform = new H.service.Platform({
+                apikey: 'WA6algDxXVXTIm1_H6HqJJiRarAMgmnLHzqr33Xw6W8'
+            });
+    
+            var defaultLayers = platform.createDefaultLayers();
+            var map = new H.Map(
+                document.getElementById('map'),
+                defaultLayers.vector.normal.map,
+                {
+                    center: { lat: 0, lng: 0 },
+                    zoom: 2,
+                    pixelRatio: window.devicePixelRatio || 1
+                }
+            );
+    
+            var ui = H.ui.UI.createDefault(map, defaultLayers);
+            var mapEvents = new H.mapevents.MapEvents(map);
+            var behavior = new H.mapevents.Behavior(mapEvents);
+    
+            var markers = [];
+    
+            document.getElementById('tripForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                var place = document.getElementById('place').value;
+                var listItem = document.createElement('li');
+                var selectedDate = new Date(document.getElementById('date').value);
+                listItem.textContent = place;
+                document.getElementById('placesList').appendChild(listItem);
+                document.getElementById('place').value = '';
+    
+                var searchService = platform.getSearchService();
+                searchService.geocode({
+                    q: place
+                }, function(result) {
+                    if (result.items.length > 0) {
+                        var location = result.items[0].position;
+                        var markerNumber = markers.length + 1;
+                        var markerIcon = new H.map.Icon('data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                                <circle cx="16" cy="16" r="12" fill="#FF0000" />
+                                <text x="16" y="20" font-size="12" font-family="Arial" font-weight="bold" text-anchor="middle" fill="#FFFFFF">${markerNumber}</text>
+                            </svg>
+                        `));
+                        var marker = new H.map.Marker(location, { icon: markerIcon });
+                        map.addObject(marker);
+                        markers.push(marker);
+    
+                        map.setCenter(location);
+                        map.setZoom(6);
+    
+                        // Make an API call to the`/forecast` endpoint
+                        fetch(`/forecast?lat=${location.lat}&lon=${location.lng}&date=${selectedDate}`)
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error(`HTTP error! status: ${response.status}`);
+                                }
+                                return response.json();
+                            })
+                            .then(forecastData => {
+                                updateWeatherDisplay(forecastData, listItem, selectedDate);
+                            })
+                            .catch(error => {
+                                console.error('Error fetching forecast data:', error);
+                                listItem.insertAdjacentHTML('beforeend', '<p>Failed to load the weather data. Please try again.</p>');
+                            });
+                        }
+                    });
+                });
+    
+                document.getElementById('saveTripForm').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    var tripName = document.getElementById('tripName').value;
+                    var locations = Array.from(document.getElementById('placesList').children).map(item => item.textContent);
+                    var userId = sessionStorage.getItem('userId');  
+    
+                    // Save the trip to the server
+                    fetch('/save_trip', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ name: tripName, locations: locations, userId: userId })  
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        document.getElementById('tripName').value = '';
+                        document.getElementById('placesList').innerHTML = '';
+    
+                        fetchSavedTrips();
+                    })
+                    .catch(error => {
+                        console.error('Error saving trip:', error);
+                    });
+                });
+    
+                // Function to fetch and display saved trips
+                function fetchSavedTrips() {
+                    fetch('/saved_trips')
+                        .then(response => response.json())
+                        .then(trips => {
+                            const savedTripsList = document.getElementById('savedTripsList');
+                            savedTripsList.innerHTML = ''; // Clear the existing list
+    
+                            trips.forEach(trip => {
+                                const listItem = document.createElement('li');
+                                const button = document.createElement('button');
+                                button.textContent = trip.name;
+                                button.classList.add('trip-button');
+                                button.onclick = () => displayTripDetails(trip);
+                                
+                                const deleteButton = document.createElement('button');
+                                deleteButton.textContent = 'Delete';
+                                deleteButton.classList.add('delete-button');
+                                deleteButton.onclick = () => deleteTrip(trip.tripId);
+    
+                                listItem.appendChild(button);
+                                listItem.appendChild(deleteButton);
+                                savedTripsList.appendChild(listItem);
+                            });
+                        })
+                        .catch(error => console.error('Error retrieving saved trips:', error));
+                }
+    
+                function displayTripDetails(trip) {
+                    const tripDetails = document.getElementById('tripDetails');
+                    const tripInfo = document.getElementById('tripInfo');
+                    tripInfo.innerHTML = '';
+    
+                    const placesList = document.getElementById('placesList');
+                    placesList.innerHTML = '';
+    
+                    trip.locations.forEach(location => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = location; 
+                        placesList.appendChild(listItem);
+    
+                        // Geocode the location to get its coordinates
+                        var searchService = platform.getSearchService();
+                        searchService.geocode({
+                            q: location
+                        }, function(result) {
+                            if (result.items.length > 0) {
+                                var position = result.items[0].position;
+                                var lat = position.lat;
+                                var lng = position.lng;
+    
+                                // Make an API call to the `/forecast` endpoint with the obtained coordinates
+                                fetch(`/forecast?lat=${lat}&lon=${lng}`)
+                                    .then(response => {
+                                        if (!response.ok) {
+                                            throw new Error(`HTTP error! status: ${response.status}`);
+                                        }
+                                        return response.json();
+                                    })
+                                    .then(forecastData => {
+                                        updateWeatherDisplay(forecastData, listItem);
+                                    })
+                                    .catch(error => {
+                                        console.error('Error fetching forecast data:', error);
+                                        listItem.insertAdjacentHTML('beforeend', '<p>Failed to load the weather data. Please try again.</p>');
+                                    });
+                            }
+                        });
+                    });
+                    document.getElementById('tripDetails').style.display = 'block';
+                    document.getElementById('tripForm').style.display = 'none';
+                    document.getElementById('saveTripForm').style.display = 'none';
+                }
+    
+                // Add a new function to handle creating a new trip
+                function createNewTrip() {
+                    document.getElementById('tripDetails').style.display = 'none';
+                    document.getElementById('tripForm').style.display = 'block';
+                    document.getElementById('saveTripForm').style.display = 'block';
+                    document.getElementById('placesList').innerHTML = '';
+                }
+    
+                    function updateWeatherDisplay(forecastData, listItem,dateChosen) {
+                        let today = new Date();
+                        
+                        let weatherInfo = document.createElement('div');
+                        weatherInfo.className = 'weather-info';
+                        
+                        const forecasts = forecastData.list.slice(0, 40);
+                        for (let i = 0; i < forecasts.length; i += 8) {
+                            const forecast = forecasts[i];
+                            const date = new Date(forecast.dt *1000);
+                            
+                            let card = `
+                                <div class="weather-card">
+                                    <div class="weather-header">
+                                        <p class="weather-date">${date.toLocaleDateString()}</p>
+                                    </div>
+                                    <div class="weather-body">
+                                        <p class="weather-temperature">${forecast.main.temp}°F</p>
+                                        <p class="weather-description">${forecast.weather[0].description}</p>
+                                    </div>
+                                </div>
+                            `;
+                            weatherInfo.insertAdjacentHTML('beforeend', card);
+                        }
+                        listItem.appendChild(weatherInfo);
+                    }
+    
+                    function clearTripForm() {
+                        document.getElementById('place').value = '';
+                        document.getElementById('date').value = '';
+                        document.getElementById('tripName').value = '';
+                        document.getElementById('placesList').innerHTML = '';
+                        markers.forEach(marker => map.removeObject(marker));
+                        markers = [];
+                        map.setCenter({ lat: 0, lng: 0 });
+                        map.setZoom(2);
+                    }
+    
+                    function deleteTrip(tripId) {
+                        console.log('Deleting trip with tripId:', tripId);
+                        fetch('/delete_trip', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ tripId }),
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                fetchSavedTrips(); 
+                            } else {
+                                console.error('Error deleting trip:', response.status);
+                            }
+                        })
+                        .catch(error => console.error('Error deleting trip:', error));
+                    }
+    
+                fetchSavedTrips();
+        
+        </script>
+</body>
+</html>
+
+

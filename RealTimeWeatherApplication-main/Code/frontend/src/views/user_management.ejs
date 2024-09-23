@@ -1,0 +1,85 @@
+<!--
+    user_management.js
+    This script handles the dynamic aspects of the User Management Dashboard.
+    It includes functionalities such as deleting users from the system via a POST request
+    without reloading the page, enhancing user interaction and administrative efficiency.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Management Dashboard</title>
+    <link rel="stylesheet" href="/styles/user_management.css">
+</head>
+<body>
+    <header>
+        <h1>User Management Dashboard</h1>
+    </header>
+    <main>
+        <% if(users && users.length > 0) { %>
+            <ul>
+                <% users.forEach(function(user) { %>
+                    <li>
+                        <section>
+                            <%= user.first_name %> <%= user.last_name %> - <%= user.email %>
+                            <form action="/delete_user" method="post" class="delete-user-form" style="display: inline;">
+                                <input type="hidden" name="id" value="<%= user.id %>" />
+                                <button type="submit" class="btn-delete">Delete</button>
+                            </form>
+                        </section>
+                    </li>
+                <% }); %>
+            </ul>
+        <% } else { %>
+            <p>No users found.</p>
+        <% } %>
+    </main>
+    <footer>
+        <p>&copy; 2024 RealTimeWeatherApplication. All rights reserved.</p>
+    </footer>
+    <script>
+        // Event listener to handle DOMContentLoaded event
+        document.addEventListener('DOMContentLoaded', function() {
+          // Query all forms with class 'delete-user-form'
+          const deleteUserForms = document.querySelectorAll('.delete-user-form');
+          
+          // Add a submit event listener to each form
+          deleteUserForms.forEach(form => {
+            form.addEventListener('submit', function(event) {
+              // Prevent the default form submit action
+              event.preventDefault();
+              
+              // Extract user ID from the hidden input field
+              const userId = this.querySelector('input[name="id"]').value;
+              
+              // Send a POST request to the server to delete the user
+              fetch('/delete_user', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id: userId }),
+              })
+              .then(response => response.json()) // Parsing the JSON response from the server
+              .then(data => {
+                if(data.success) {
+                  // Alert the success message and remove the user element from the DOM
+                  alert('User deleted successfully');
+                  this.closest('li').remove();
+                } else {
+                  // Alert the error message received from the server
+                  alert('Error: ' + data.message);
+                }
+              })
+              .catch(error => {
+                // Alert an error message if the fetch operation fails
+                alert('Error deleting user');
+                console.error('Error:', error);
+              });
+            });
+          });
+        });
+    </script>
+</body>
+</html>

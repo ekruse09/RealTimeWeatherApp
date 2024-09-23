@@ -1,0 +1,106 @@
+<!--
+    weather_page.ejs
+    This page is dedicated to displaying current weather information for a specified city. It allows users to search for weather details
+    such as temperature, humidity, rain, and more. Integrated with Leaflet for interactive mapping, this page visually represents weather data
+    with layers for precipitation, clouds, pressure, wind, and temperature. This interactive and informative platform aids users in making
+    weather-informed decisions efficiently.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Current Weather</title>
+    <link rel="stylesheet" href="/styles/weather.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+</head>
+<body>
+    <header class="navbar" id="navbar">
+        <a href="/home_page">
+            <img src="/images/logo.png" alt="WeatherVision Logo" class="logo">
+        </a>
+        <nav>
+            <ul>
+                <li><a href="/weather_page">Current Weather</a></li>
+                <li><a href="/trip_planner">Trip Planner</a></li>
+            </ul>
+        </nav>
+        <div class="navbar-controls">
+            <a href="/profile_page" class="profile-page-link">
+                <img src="/images/profile.png" alt="Profile" class="profile-icon">
+            </a>
+            <form action="/log_out" method="post">
+                <button type="submit" class="logout-button-style">Log Out</button>
+            </form>
+        </div>        
+    </header>
+
+    <form id="weatherForm" action="/weather_page" method="get">
+        <label for="city">Enter a city:</label>
+        <input type="text" id="city" name="city" placeholder="Try, Milwaukee!" value="<%= cityName || '' %>" />
+        <button type="submit">Get Weather</button>
+    </form>
+
+    <div id="container">
+        <div id="info">
+            <p id="Cit">City: <%= weather.name %>, <%= weather.sys.country %></p>
+            <p>Description: <%= weather.weather[0].description %></p>
+            <% if (weather.rain && weather.rain['1h']) { %>
+                <p>Rain: <%= weather.rain['1h'] %>mm</p>
+            <% } else { %>
+                <p>Rain: 0mm</p>
+            <% } %>
+        
+            <div class="temp-and-feels">
+                <p id="Temp"><%= weather.main.temp %>°F</p>
+                <img id="weatherIcon" src="<%= iconUrl %>" alt="Weather Icon" style="width:100px;height:100px;">
+                <div class ="feels-hum">
+                    <p>Feels like: <%= weather.main.feels_like %>°F</p>
+                    
+                    <p>Humidity: <%= weather.main.humidity %>% </p>
+                </div>
+            </div>
+        </div>
+
+        <div id="weatherMap" style="height: 400px;"></div> 
+
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+        <script>
+            var map = L.map('weatherMap').setView([<%= lat || 0 %>, <%= lon || 0 %>], <%= zoomLevel || 13 %>);
+
+            // Base layer
+            var baseLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            // Weather layer
+            var weatherLayer = L.tileLayer('https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=' + '<%= weatherApiKey %>', {
+                maxZoom: 18,
+                attribution: 'Map data &copy; <a href="https://www.openweathermap.org">OpenWeatherMap</a>',
+                id: 'weather-map',
+            }).addTo(map);
+
+            // Function to change the weather layer
+            function changeLayer(layer) {
+                if (map.hasLayer(weatherLayer)) {
+                    map.removeLayer(weatherLayer);
+                }
+                weatherLayer = L.tileLayer(`https://tile.openweathermap.org/map/${layer}/{z}/{x}/{y}.png?appid=` + '<%= weatherApiKey %>', {
+                    maxZoom: 18,
+                    attribution: 'Map data &copy; <a href="https://www.openweathermap.org">OpenWeatherMap</a>',
+                }).addTo(map);
+            }
+
+        </script>
+    </div>
+
+    <div id="layer-controls">
+        <button onclick="changeLayer('precipitation_new')">Precipitation</button>
+        <button onclick="changeLayer('clouds_new')">Clouds</button>
+        <button onclick="changeLayer('pressure_new')">Pressure</button>
+        <button onclick="changeLayer('wind_new')">Wind</button>
+        <button onclick="changeLayer('temp_new')">Temperature</button>
+    </div>
+</body>
+</html>
