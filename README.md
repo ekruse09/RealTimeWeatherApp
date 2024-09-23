@@ -17,7 +17,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 1. **Clone the Repository**:
     ```bash
-   git clone [https://github.com/yourusername/RealTimeWeatherApplication.git]
+   git clone [https://github.com/yourusername/RealTimeWeatherApp.git]
 
 2. **Install Dependencies**:
 Navigate to the project directory and install the required dependencies:
